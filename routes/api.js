@@ -6,8 +6,12 @@ const router = express.Router()
 //get a list of videos from the db
 router.get("/videos",function(req,res, next) {
     Video.find({}).then(function(videos){
-        res.send(videos)
-    })      
+        if(videos.length == false){
+            res.send("No videos found in database")
+        }else{
+            res.send(videos)
+        }
+    })     
 })
 
 
@@ -35,6 +39,8 @@ router.delete("/videos/:id",function(req,res, next){
     Video.findOneAndDelete({_id: req.params.id}).then(function(video){
         res.send(video);
         
+    }).catch(function(){
+        res.send("No video with that ID")
     })
 })
 
